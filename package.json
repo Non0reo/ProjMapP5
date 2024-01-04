@@ -1,0 +1,23 @@
+{
+  "name": "projmaphabitat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "shapeQuad.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Non0reo/ProjMapP5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Non0reo/ProjMapP5/issues"
+  },
+  "homepage": "https://github.com/Non0reo/ProjMapP5#readme",
+  "dependencies": {
+    "@types/p5": "^1.7.6"
+  }
+}

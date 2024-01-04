@@ -6,40 +6,43 @@ class ShapeQuad {
      * @param {Number} zIndex
      * 
      */
-    constructor(texture, vertices, zIndex = shapes.length) {
-      for (let vertex of vertices) {
-        vertex['parent'] = zIndex;
+    constructor(texture, vertices, zIndex = shapes.length, color) {
+
+      for (let i = 0; i < vertices.length; i++) {
+        vertices[i]['index'] = i;
+        vertices[i]['parent'] = zIndex;
       }
+
+      this.type = 'quad';
       this.vertices = vertices;
       this.zIndex = zIndex;
       this.texture = texture;
-      this.debugColor = {r: parseInt(Math.random() * 128 + 128), g: parseInt(Math.random() * 128 + 128), b: parseInt(Math.random() * 128 + 128)};
+      this.debugColor = color ? color : {r: parseInt(Math.random() * 128 + 128), g: parseInt(Math.random() * 128 + 128), b: parseInt(Math.random() * 128 + 128)};
     }
   
     draw() {
       if(this.texture === "color") this.getColor();
-      else texture(this.texture);
+      else texture(eval(this.texture));
   
-      /* beginShape();
+      /* beginShape(QUADS);
       //console.log(this.vertices);
       for (let i = 0; i < this.vertices.length; i++) {
         //vertex(this.vertices[i][0], this.vertices[i][1], this.zIndex, this.vertices[i][0], this.vertices[i][1]);
         vertex(this.vertices[i].x, -this.vertices[i].y, this.zIndex, this.vertices[i].x, this.vertices[i].y);
       }
-      endShape(CLOSE); */
-      quad(this.vertices[0].x, -this.vertices[0].y, this.zIndex, this.vertices[1].x, -this.vertices[1].y, this.zIndex, this.vertices[2].x, -this.vertices[2].y, this.zIndex, this.vertices[3].x, -this.vertices[3].y, this.zIndex);
+      endShape(CLOSE, 200); */
+      //quad(this.vertices[0].x, -this.vertices[0].y, this.zIndex, this.vertices[1].x, -this.vertices[1].y, this.zIndex, this.vertices[2].x, -this.vertices[2].y, this.zIndex, this.vertices[3].x, -this.vertices[3].y, this.zIndex);
+
+      this.drawBorder();
+      
+      noStroke();
+      quad(this.vertices[0].x, -this.vertices[0].y, this.zIndex, this.vertices[1].x, -this.vertices[1].y, this.zIndex, this.vertices[2].x, -this.vertices[2].y, this.zIndex, this.vertices[3].x, -this.vertices[3].y, this.zIndex, 20, 20);
+      
     }
 
     drawEdit() {
-      // for (let i = 0; i < this.vertices.length; i++) {
-      //     let vertex = this.vertices[i];
-      //     let nextVertex = this.vertices[(i + 1) % this.vertices.length];
-      //     line(vertex.x, -vertex.y, this.zIndex, nextVertex.x, -nextVertex.y, this.zIndex);
-      //     fill(255, 0, 0);
-      //     ellipse(vertex.x, -vertex.y, 10, 10);
-      //     fill(0, 0, 0);
-      // }
 
+      //Corner Circles
       for (let vertex of this.vertices) {
         this.getColor();
         ellipse(vertex.x, -vertex.y, 10, 10);
@@ -50,13 +53,32 @@ class ShapeQuad {
         fill(0, 0, 0);
       }
       
-      this.getColor('stroke');
-      strokeWeight(8);
+      /* this.getColor('stroke');
+      strokeWeight(15);
+      this.drawLines();
       noFill();
-      this.draw();
+      //this.draw();
       stroke(0, 0, 0);
-      strokeWeight(1);
+      strokeWeight(1); */
+      strokeWeight(15);
+      this.getColor('stroke');
+      this.drawLines();
 
+      this.drawBorder();
+      
+
+    }
+
+    drawLines() {
+      for (let i = 0; i < this.vertices.length; i++) {
+        line(this.vertices[i].x, -this.vertices[i].y, this.vertices[(i + 1) % this.vertices.length].x, -this.vertices[(i + 1) % this.vertices.length].y);
+      }
+    }
+
+    drawBorder() {
+      strokeWeight(2);
+      stroke(0, 0, 0);
+      this.drawLines();
     }
   
     isMouseOver() { //Taken from https://github.com/bmoren/p5.collide2D/blob/master/p5.collide2d.js#L282
@@ -89,6 +111,22 @@ class ShapeQuad {
     getColor(type = 'fill'){
         if(type === 'fill') fill(this.debugColor.r, this.debugColor.g, this.debugColor.b);
         else if(type === 'stroke') stroke(this.debugColor.r, this.debugColor.g, this.debugColor.b);
+    }
+
+    setColor(r, g, b) {
+      this.debugColor = {r, g, b};
+    }
+
+    setTexture(tex) {
+      if(tex === "color") this.texture = this.getColor();
+      else {
+        this.texture = tex;
+        texture(eval(this.texture));
+      }
+    }
+
+    setIndex(index) {
+      this.zIndex = index;
     }
   }
   
