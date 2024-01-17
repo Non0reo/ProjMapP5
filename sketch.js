@@ -6,11 +6,30 @@ let lastSelectedShapesStack = [];
 let lastSelectedShape = defaultQuad();
 let lastDraggedShape = defaultQuad();
 
+let imgs = {};
+let imageList = [
+  'balcony.png',
+  'walls.png'
+];
+
+function preload() {  
+  for (let image of imageList) {
+    imgs[image.replace('.png', '')] = loadImage(`assets/${image}`);
+  }
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   screen = createGraphics(100, 100, P2D);
 
-  for (let i = 0; i < 3; i++) {
+  /* shapes.push(new ShapeQuad('color', [
+    {x: 20, y: 30},
+    {x: 80, y: 50},
+    {x: 70, y: 80},
+    {x: 10, y: 70}
+  ]));
+
+  for (let i = 0; i < 2; i++) {
     shapes.push(new ShapeQuad('screen', [
       {x: 0, y: 0},
       {x: 100, y: 0},
@@ -24,44 +43,125 @@ function setup() {
     {x: 80, y: 50},
     {x: 70, y: 80},
     {x: 10, y: 70}
-  ]));
+  ])); */
+
+  const temp = {
+    texture: 'color',
+    vertices: [
+      {x: 20, y: 30},
+      {x: 80, y: 50},
+      {x: 70, y: 80},
+      {x: 10, y: 70}
+    ],
+    tags: ['wall']
+  }
+
+
+  shapes.push(new ShapeQuad(temp));
+
+
+  /* shapes.push(new ShapeTri('color', [
+    {x: 30, y: 20},
+    {x: 80, y: 50},
+    {x: 10, y: 70}
+  ])); */
+
+  loadJSON('assets/saves/MapSave.json', loadScene);
 }
 
 function draw() {
-  background(0);
+  background(128);
 
   screen.background(255);
   screen.ellipse(mouseX, mouseY, 50, 50);
 
   //camera(-0, 0, -100);
-  translate(-width/2 , height/2, -100);
+  translate(-width/2 , height/2, 100);
   ortho(-width / 2, width / 2, height / 2, -height / 2, 0, 10000);
   //rotate(frameCount * 0.01, [0.5, 1, 1]);
   
 
-  for (const shape of shapes) {
+  /* for (const shape of shapes) {
     //shape.draw();
     if(shape === lastSelectedShape && editMode) {
       //shape.drawEdit();
-      shape.draw();
+      
       shape.drawEdit();
+      //shape.draw();
     } else if(editMode) {
-      shape.draw();
+      //shape.draw();
       shape.drawBorder();
       //shape.draw();
     } else {
-      shape.draw();
+      //shape.draw();
     }
+  } */
+
+  /* for (const shape of shapes) {
+    shape.draw();
   }
+ */
+
+  noStroke();
+  noFill();
+
+
+  
+  // for (let i = shapes.length - 1; i >= 0; i--) {
+  //   //shapes[i].draw();
+  //   // strokeWeight(2);
+  //   // stroke(0);
+  //   // shapes[i].drawLines();
+  //   // shapes[i].drawBorder();
+  // }
 
   for (const shape of shapes) {
-    //shape.draw();
-    if(shape === lastSelectedShape && editMode) {
-      //shape.drawEdit();
-      //shape.draw();
-      shape.drawEdit();
-    }
+    
+    if (!editMode) shape.draw();
+
+    strokeWeight(2);
+    stroke(0);
+    shape.drawLines();
+
+    //shape.drawBorder();
+    // if (shape === lastSelectedShape && editMode) {
+    //   shape.drawEdit();
+    // }
   }
+
+  for (let i = shapes.length - 1; i >= 0; i--) {
+    //shapes[i].drawBorder();
+    if(!editMode || shapes[i] !== lastSelectedShape) continue;
+
+    shapes[i].drawEdit();
+    break;
+
+    // if (shapes[i] === lastSelectedShape && editMode) {
+    //   shapes[i].drawEdit();
+    //   return;
+    // }
+  }
+
+  // for (let i = shapes.length - 1; i >= 0; i--) {
+  //   //shape.draw();
+  //   /* if(shapes[i] === lastSelectedShape && editMode) {
+  //     //shape.drawEdit();
+  //     //shape.draw();
+  //     //console.log(shapes[i]);
+  //     shapes[i].drawEdit();
+  //   } */
+  //   shapes[i].drawBorder();
+  //   if(shapes[i] === lastSelectedShape && editMode) {
+  //     //shape.drawEdit();
+  //     //shape.draw();
+  //     //console.log(shapes[i]);
+  //     //shapes[i].drawEdit();
+  //   }
+  //   //shapes[i].drawEdit();
+  //   //shape.draw();
+  // }
+
+
 
 
   /* for (const shape of shapes) {
@@ -261,5 +361,18 @@ function keyPressed() {
       } else console.warn('No Json were pasted');
 
     break;
+
+    //duplicate shape
+    case 68: //D
+      if(!editMode) break;
+      if(lastSelectedShape.zIndex !== -1) {
+        const newShape = duplicateShape(shapes[lastSelectedShape.zIndex]);
+        if(newShape === null) return;
+        shapes.push(newShape);
+        unselectAllShapes();
+        lastSelectedShape = newShape;
+      }
+    break;
+
   }
 }

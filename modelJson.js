@@ -25,6 +25,7 @@ function saveScene() {
             'type': shapes[i].type, // 'quad' or 'triangle'
             'texture': shapes[i].texture,
             'color': shapes[i].debugColor,
+            'tags': shapes[i].tags,
             'vertices': []
         };
         for (let vertex of shapes[i].vertices) {
@@ -58,7 +59,7 @@ function loadScene(json) {
     for (let i = 0; i < Object.keys(json).length; i++) {
         switch (json[i].type) {
             case 'quad':
-                shapes.push(new ShapeQuad(json[i].texture, json[i].vertices, json[i].id, json[i].color));
+                shapes.push(new ShapeQuad(json[i]));
                 break;
             /* case 'triangle':
                 shapes.push(new shapeTriangle(json[i].texture, json[i].vertices, json[i].id));
