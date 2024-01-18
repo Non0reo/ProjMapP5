@@ -108,7 +108,7 @@ function startNewVideo(chain = false) {
     const fadeLength = 2; //Fade in and out length in seconds
 
     //console.log(actualVideo.shape);
-    actualVideo.name = videoList[actualVideo.id].replace('.mp4', '')
+    actualVideo.name = videoList[actualVideo.id].slice(0, -4)
     actualVideo.video = videos[actualVideo.name];
     actualVideo.chain = chain;
     actualVideo.duration = actualVideo.video.duration();

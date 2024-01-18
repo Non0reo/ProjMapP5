@@ -43,7 +43,7 @@ const videoList = [
 function preload() {
   for (let image of imageList) {
     //imgs[image.replace('.png', '')] = loadImage(`assets/${image}`);
-    imgs[image.replace('.png', '')] = loadImage(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/${image}`);
+    imgs[image.slice(0, -4)] = loadImage(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/${image}`);
   }
 
   for (let video of videoList) {
