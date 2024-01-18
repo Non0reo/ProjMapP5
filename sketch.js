@@ -45,6 +45,7 @@ const videoList = [
   'mechant.mov',
   'fenetre.mov',
   'livreur.mov',
+  'magicien.mp4',
 ];
 
 function preload() {
