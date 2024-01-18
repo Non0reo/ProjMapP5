@@ -6,6 +6,8 @@ let lastSelectedShapesStack = [];
 let lastSelectedShape = defaultQuad();
 let lastDraggedShape = defaultQuad();
 
+const USE_ASSETS = false;
+
 let actualVideo = {
   'name': '',
   'id': null,
@@ -41,12 +43,13 @@ const videoList = [
   'coiffeur.mov',
   'dodo.mov',
   'mechant.mov',
+  'fenetre.mov',
 ];
 
 function preload() {
   for (let image of imageList) {
     //imgs[image.replace('.png', '')] = loadImage(`assets/${image}`);
-    imgs[image.slice(0, -4)] = loadImage(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/${image}`);
+    imgs[image.slice(0, -4)] = USE_ASSETS ? loadImage(`assets/${image}`) : loadImage(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/${image}`);
   }
 
   for (let video of videoList) {
@@ -54,7 +57,7 @@ function preload() {
     const name = video.slice(0, -4);
 
     //videos[name] = createVideo(`assets/videos/${video}`);
-    videos[name] = createVideo(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/videos/${video}`);
+    videos[name] = USE_ASSETS ? createVideo(`assets/videos/${video}`) : createVideo(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/videos/${video}`);
     videos[name].noLoop();
     videos[name].hide();
     videos[name].autoplay(false);
@@ -67,6 +70,7 @@ function preload() {
 
     // videos[name].hide();
     // videos[name] = createVideo(`assets/videos/${video}`);
+    console.log(videos[name], videos[name].duration());
   }
   console.log(videos);
 }
@@ -88,8 +92,7 @@ function setup() {
 
   // shapes.push(new ShapeQuad(temp));
 
-  loadJSON('https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/saves/MapSave.json', loadScene);
-  //loadJSON('assets/saves/MapSave.json', loadScene);
+  USE_ASSETS ? loadJSON('assets/saves/MapSave.json', loadScene) : loadJSON('https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/saves/MapSave.json', loadScene);
 }
 
 function draw() {
