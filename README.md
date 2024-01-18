@@ -21,3 +21,5 @@
 • Calibrer si besoins la projection en activant le mode d'édition (touche 'e' du clavier) et en apuyant sur les flèches dirrectionnelles
 
 • Mettre en grand écran
+
+• Pour lancer les vidéos : appuyer sur la touche 'o'

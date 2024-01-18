@@ -154,12 +154,17 @@ function setNewVideo() {
     //Pick random video id
     if(actualVideo.id === null) {
         actualVideo.id = Math.floor(Math.random() * Object.keys(videos).length);
-    } else {
+    } 
+    /* else {
         let random;
         do {
             random = Math.floor(Math.random() * Object.keys(videos).length);
         } while (actualVideo.id === random);
         actualVideo.id = random;
+    } */
+    else {
+        actualVideo.id++;
+        if(actualVideo.id >= Object.keys(videos).length) actualVideo.id = 0;
     }
 }
 
