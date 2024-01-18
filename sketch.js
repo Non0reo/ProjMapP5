@@ -37,6 +37,7 @@ const videoList = [
   'robot.mp4',
   'peinture.mp4',
   'espace.mp4',
+  'coiffeur.mov',
 ];
 
 function preload() {
@@ -46,7 +47,9 @@ function preload() {
   }
 
   for (let video of videoList) {
-    const name = video.replace('.mp4', '');
+    //remove last 4 characters from the string
+    const name = video.slice(0, -4);
+
     //videos[name] = createVideo(`assets/videos/${video}`);
     videos[name] = createVideo(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/videos/${video}`);
     videos[name].noLoop();
@@ -275,13 +278,6 @@ function mousePressed() {
           MovingVertex = shapes[i].vertices[pointDist.indexOf(Math.min(...pointDist))];
         }
 
-        /* for (const vertex of shapes[i].vertices) {
-          if(dist(vertex.x, vertex.y, mouseX, mouseY) < 20) {
-            MovingVertex = vertex;
-            break;
-          }
-        } */
-
         return;
       }
     }
@@ -416,5 +412,54 @@ function keyPressed() {
       startNewVideo(true);
     break;
 
+    case 38: //up arrow
+      moveEveryShape('y', -1);
+    break;
+
+    case 37: //left arrow
+      moveEveryShape('x', -1);
+    break;
+
+    case 39: //right arrow
+      moveEveryShape('x', 1);
+    break;
+
+    case 40: //down arrow
+      moveEveryShape('y', 1);
+    break;
+
+    //;
+    case 186:
+      scaleEveryShapes(1.1);
+    break;
+
+    //:
+    case 59:
+      scaleEveryShapes(1/1.1);
+    break;
+    
+  }
+}
+
+function moveEveryShape(axis, amount) {
+  if(!editMode) return;
+  for (const shape of shapes) {
+    if(shape === lastSelectedShape) continue;
+    for (const vertex of shape.vertices) {
+      if(axis === 'x') vertex.x += amount;
+      else if(axis === 'y') vertex.y += amount;
+    }
+  }
+}
+
+//sale every shape by an amount from the origin
+function scaleEveryShapes(amount) {
+  if(!editMode) return;
+  for (const shape of shapes) {
+    if(shape === lastSelectedShape) continue;
+    for (const vertex of shape.vertices) {
+      vertex.x *= amount;
+      vertex.y *= amount;
+    }
   }
 }
