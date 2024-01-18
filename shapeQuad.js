@@ -22,7 +22,9 @@ class ShapeQuad extends Shape {
     //this.drawBorder();
     
     //noStroke();
-    const detailCount = this.texture === "color" ? 2 : 20;
+    //const detailCount = this.texture === "color" ? 2 : 20;
+    //if texture contains 'color' or 'image' then use 2, else use 20
+    const detailCount = this.texture.includes('color') || this.texture.includes('image') ? 2 : 20; 
     quad(this.vertices[0].x, -this.vertices[0].y, this.zIndex, this.vertices[1].x, -this.vertices[1].y, this.zIndex, this.vertices[2].x, -this.vertices[2].y, this.zIndex, this.vertices[3].x, -this.vertices[3].y, this.zIndex, detailCount, detailCount);
     
   }

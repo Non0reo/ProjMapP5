@@ -6,74 +6,105 @@ let lastSelectedShapesStack = [];
 let lastSelectedShape = defaultQuad();
 let lastDraggedShape = defaultQuad();
 
+let actualVideo = {
+  'name': '',
+  'id': null,
+  'video': null,
+  'chain': false,
+  'duration': null,
+  'fadeInTo': null,
+  'fadeOutFrom': null,
+  'isPlaying': false,
+}
+let actualWindow = {
+  'shape': undefined,
+  'id': null,
+  'tag': null,
+  'transition': 0,
+}
+
+
 let imgs = {};
-let imageList = [
+let videos = {};
+const imageList = [
   'balcony.png',
-  'walls.png'
+  'walls.png',
+  'windowBalcony.png',
+];
+const videoList = [
+  'dog.mp4',
+  'future.mp4',
+  'robot.mp4',
+  'peinture.mp4',
+  'espace.mp4',
 ];
 
 function preload() {  
   for (let image of imageList) {
     imgs[image.replace('.png', '')] = loadImage(`assets/${image}`);
   }
+
+  for (let video of videoList) {
+    const name = video.replace('.mp4', '');
+    videos[name] = createVideo(`assets/videos/${video}`);
+    videos[name].noLoop();
+    videos[name].hide();
+    videos[name].autoplay(false);
+    videos[name].hideControls();
+    videos[name].stop();
+    videos[name].onended(() => {
+      endOfVideo();
+      console.log('end of video')
+    });
+
+    // videos[name].hide();
+    // videos[name] = createVideo(`assets/videos/${video}`);
+  }
+  console.log(videos);
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  screen = createGraphics(100, 100, P2D);
+  screen = createGraphics(640, 480, P2D);
 
-  /* shapes.push(new ShapeQuad('color', [
-    {x: 20, y: 30},
-    {x: 80, y: 50},
-    {x: 70, y: 80},
-    {x: 10, y: 70}
-  ]));
+  // const temp = {
+  //   texture: 'color',
+  //   vertices: [
+  //     {x: 20, y: 30},
+  //     {x: 80, y: 50},
+  //     {x: 70, y: 80},
+  //     {x: 10, y: 70}
+  //   ],
+  //   tags: ['wall']
+  // }
 
-  for (let i = 0; i < 2; i++) {
-    shapes.push(new ShapeQuad('screen', [
-      {x: 0, y: 0},
-      {x: 100, y: 0},
-      {x: 100, y: 100},
-      {x: 0, y: 100}
-    ]));
-  }
+  // shapes.push(new ShapeQuad(temp));
 
-  shapes.push(new ShapeQuad('color', [
-    {x: 20, y: 30},
-    {x: 80, y: 50},
-    {x: 70, y: 80},
-    {x: 10, y: 70}
-  ])); */
-
-  const temp = {
-    texture: 'color',
-    vertices: [
-      {x: 20, y: 30},
-      {x: 80, y: 50},
-      {x: 70, y: 80},
-      {x: 10, y: 70}
-    ],
-    tags: ['wall']
-  }
-
-
-  shapes.push(new ShapeQuad(temp));
-
-
-  /* shapes.push(new ShapeTri('color', [
-    {x: 30, y: 20},
-    {x: 80, y: 50},
-    {x: 10, y: 70}
-  ])); */
 
   loadJSON('assets/saves/MapSave.json', loadScene);
 }
 
 function draw() {
-  background(128);
+  background(120);
 
-  screen.background(255);
-  screen.ellipse(mouseX, mouseY, 50, 50);
+  //screen.background(255);
+  //screen.ellipse(mouseX, mouseY, 50, 50);
+  
+  if(actualVideo.id !== null) {
+    // console.log(actualVideo.video.time())
+    screen.tint(255, 255);
+    screen.image(imgs['windowBalcony'], 0, 0, screen.width, screen.height);
+    if(actualVideo.isPlaying) {
+      if(actualVideo.video.time() < actualVideo.fadeInTo) {
+        screen.tint(255, map(actualVideo.video.time(), 0, actualVideo.fadeInTo, 0, 255));
+      } else if(actualVideo.video.time() > actualVideo.fadeOutFrom) {
+        screen.tint(255, map(actualVideo.video.time(), actualVideo.fadeOutFrom, actualVideo.duration, 255, 0));
+      }
+    }   
+    screen.image(actualVideo.video, 0, 0, screen.width, screen.height);
+  }
+  
+
 
   //camera(-0, 0, -100);
   translate(-width/2 , height/2, 100);
@@ -320,12 +351,14 @@ function keyPressed() {
 
     case 78: //N
       if(!editMode) break;
-      shapes.push(new ShapeQuad('color', [
-        {x: mouseX, y: mouseY},
-        {x: mouseX + 30, y: mouseY},
-        {x: mouseX + 30, y: mouseY + 30},
-        {x: mouseX, y: mouseY + 30}
-      ]));
+      shapes.push(new ShapeQuad({
+        texture: 'color', 
+        vertices: [
+          {x: mouseX, y: mouseY},
+          {x: mouseX + 30, y: mouseY},
+          {x: mouseX + 30, y: mouseY + 30},
+          {x: mouseX, y: mouseY + 30}
+        ]}));
     break;
 
     case 46: //delete
@@ -372,6 +405,13 @@ function keyPressed() {
         unselectAllShapes();
         lastSelectedShape = newShape;
       }
+    break;
+
+    //o
+    case 79:
+      console.log('%cStarted Video Chain!', 'color: #00eeee; background-color: #000000; font-size: 20px; padding: 6px; border-radius: 10px;');
+      console.log('%cExecutez dans la console la commande `stopChain()` pour stopper la boucle', 'color: #fff; background-color: #000000; font-size: 14px; padding: 6px; border-radius: 10px;');
+      startNewVideo(true);
     break;
 
   }

@@ -55,3 +55,110 @@ function addTagActive(tag) {
         console.warn("ERROR: Something went wrong")
     }
 }
+
+function changeTexFor(tag, tex) {
+    if (typeof tag !== "string") return console.warn("ERROR: Plase use a string for the tag used")
+    if (typeof tex !== "string") return console.warn("ERROR: Plase use a string for the texture used")
+
+    for (let i = 0; i < shapes.length; i++) {
+        if(shapes[i].tags.includes(tag)) {
+            shapes[i].setTexture(tex);
+        }
+    }
+}
+
+
+/* Video related */
+
+function stopChain() {
+    actualVideo.chain = false;
+    endOfVideo();
+}
+
+function endOfVideo() {
+    actualVideo.isPlaying = false;
+    if(actualVideo.chain) {
+        startNewVideo(true);
+    } else {
+        actualVideo.video.stop();
+        changeTexFor(actualWindow.tag, "imgs['windowBalcony']");
+    }
+}
+
+function startNewVideo(chain = false) {
+    if(actualVideo.video !== null) {
+        actualVideo.video.stop();
+        changeTexFor(actualWindow.tag, "imgs['windowBalcony']"); //Replace every window with default texture
+    }
+
+    setNewVideo();
+    setNewWindow();
+
+    //get the shape with the actualWindow.tag
+    actualWindow.tag = "w" + actualWindow.id;
+    for (let i = 0; i < shapes.length; i++) {
+        if(shapes[i].tags.includes("window") && shapes[i].tags.includes(actualWindow.tag)) {
+            actualWindow.shape = shapes[i];
+            break;
+        }
+    }
+
+    changeTexFor(`w${actualWindow.id}`, "screen");
+
+    const fadeLength = 2; //Fade in and out length in seconds
+
+    //console.log(actualVideo.shape);
+    actualVideo.name = videoList[actualVideo.id].replace('.mp4', '')
+    actualVideo.video = videos[actualVideo.name];
+    actualVideo.chain = chain;
+    actualVideo.duration = actualVideo.video.duration();
+    actualVideo.fadeInTo = fadeLength;
+    actualVideo.fadeOutFrom = actualVideo.duration - fadeLength;
+    actualVideo.isPlaying = true;
+    actualVideo.video.play();
+
+    //console.log(`playing ${actualVideo.name} on window ${actualWindow.id}`)
+}
+
+
+function chainVideos(bool) {
+    if(bool === undefined) actualVideo.chain = !actualVideo.chain;
+    else actualVideo.chain = bool;
+    console.warn("Chain videos: " + actualVideo.chain);
+}
+
+
+
+function windowCount() {
+    let windows = 0;
+    for (let i = 0; i < shapes.length; i++) {
+        if(shapes[i].tags.includes("window")) windows++;
+    }
+    return windows;
+}
+
+function setNewVideo() {
+    //Pick random video id
+    if(actualVideo.id === null) {
+        actualVideo.id = Math.floor(Math.random() * Object.keys(videos).length);
+    } else {
+        let random;
+        do {
+            random = Math.floor(Math.random() * Object.keys(videos).length);
+        } while (actualVideo.id === random);
+        actualVideo.id = random;
+    }
+}
+
+function setNewWindow() {
+    //Pick random window id
+    if(actualWindow.id === null) {
+        actualWindow.id = Math.floor(Math.random() * windowCount());
+    } else {
+        let random;
+        do {
+            random = Math.floor(Math.random() * windowCount());
+        } while (actualWindow.id === random);
+        actualWindow.id = random;
+    }
+}
