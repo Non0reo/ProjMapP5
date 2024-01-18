@@ -6,7 +6,7 @@ let lastSelectedShapesStack = [];
 let lastSelectedShape = defaultQuad();
 let lastDraggedShape = defaultQuad();
 
-const USE_ASSETS = false;
+const USE_ASSETS = true;
 
 let actualVideo = {
   'name': '',
