@@ -39,14 +39,16 @@ const videoList = [
   'espace.mp4',
 ];
 
-function preload() {  
+function preload() {
   for (let image of imageList) {
-    imgs[image.replace('.png', '')] = loadImage(`assets/${image}`);
+    //imgs[image.replace('.png', '')] = loadImage(`assets/${image}`);
+    imgs[image.replace('.png', '')] = loadImage(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/${image}`);
   }
 
   for (let video of videoList) {
     const name = video.replace('.mp4', '');
-    videos[name] = createVideo(`assets/videos/${video}`);
+    //videos[name] = createVideo(`assets/videos/${video}`);
+    videos[name] = createVideo(`https://github.com/Non0reo/ProjMapP5/raw/main/assets/videos/${video}`);
     videos[name].noLoop();
     videos[name].hide();
     videos[name].autoplay(false);
@@ -80,8 +82,8 @@ function setup() {
 
   // shapes.push(new ShapeQuad(temp));
 
-
-  loadJSON('assets/saves/MapSave.json', loadScene);
+  loadJSON('https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/saves/MapSave.json', loadScene);
+  //loadJSON('assets/saves/MapSave.json', loadScene);
 }
 
 function draw() {
