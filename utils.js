@@ -1,3 +1,5 @@
+let timeout = null;
+
 function unselectAllShapes() {
     lastSelectedShape = defaultQuad();
     lastSelectedShapesStack = [];
@@ -76,6 +78,7 @@ function stopChain() {
 }
 
 function endOfVideo() {
+    clearTimeout(timeout);
     actualVideo.isPlaying = false;
     if(actualVideo.chain) {
         startNewVideo(true);
@@ -116,6 +119,12 @@ function startNewVideo(chain = false) {
     actualVideo.fadeOutFrom = actualVideo.duration - fadeLength;
     actualVideo.isPlaying = true;
     actualVideo.video.play();
+
+
+    timeout = setTimeout(() => {
+        console.warn('Something went wrong with the video. Changing to next one...')
+        endOfVideo();
+    }, 70000);
 
     //console.log(actualVideo, actualVideo.video.duration());
 

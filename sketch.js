@@ -44,6 +44,7 @@ const videoList = [
   'dodo.mov',
   'mechant.mov',
   'fenetre.mov',
+  'livreur.mov',
 ];
 
 function preload() {
@@ -70,7 +71,7 @@ function preload() {
 
     // videos[name].hide();
     // videos[name] = createVideo(`assets/videos/${video}`);
-    console.log(videos[name], videos[name].duration());
+    //console.log(videos[name], videos[name].duration());
   }
   console.log(videos);
 }
