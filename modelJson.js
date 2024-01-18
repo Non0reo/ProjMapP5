@@ -65,6 +65,5 @@ function loadScene(json) {
                 shapes.push(new shapeTriangle(json[i].texture, json[i].vertices, json[i].id));
                 break; */
         }
-        console.log(i, shapes[i], shapes)
     }
 }

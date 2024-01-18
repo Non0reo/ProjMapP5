@@ -38,6 +38,7 @@ const videoList = [
   'peinture.mp4',
   'espace.mp4',
   'coiffeur.mov',
+  'dodo.mov'
 ];
 
 function preload() {

@@ -6,6 +6,8 @@
 
 # Programe
 
+• Être connecté à internet
+
 • Télécharger le projet en local, cliquer sur le 'index.html' pour le lancer
 
 # Projection
@@ -15,3 +17,7 @@
 • Utilier une pince pour arracher le derrière sur lui (mettre la pince entre les marqueurs bleus)
 
 • Faire en sorte de positionner le projecteur comme sur la photo à une distance équivalente
+
+• Calibrer si besoins la projection en activant le mode d'édition (touche 'e' du clavier) et en apuyant sur les flèches dirrectionnelles
+
+• Mettre en grand écran
