@@ -89,6 +89,8 @@ function endOfVideo() {
 }
 
 function startNewVideo(chain = false) {
+    clearTimeout(timeout);
+    
     if(actualVideo.video !== null) {
         actualVideo.video.stop();
         changeTexFor(actualWindow.tag, "imgs['windowBalcony']"); //Replace every window with default texture
