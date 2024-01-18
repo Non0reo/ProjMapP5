@@ -117,7 +117,7 @@ function startNewVideo(chain = false) {
     actualVideo.isPlaying = true;
     actualVideo.video.play();
 
-    console.log(actualVideo, actualVideo.video.duration());
+    //console.log(actualVideo, actualVideo.video.duration());
 
     //console.log(`playing ${actualVideo.name} on window ${actualWindow.id}`)
 }

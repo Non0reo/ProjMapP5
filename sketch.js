@@ -37,6 +37,7 @@ const videoList = [
   'robot.mp4',
   'peinture.mp4',
   'espace.mp4',
+  'peintre.mp4',
   'coiffeur.mov',
   'dodo.mov',
   'mechant.mov',
