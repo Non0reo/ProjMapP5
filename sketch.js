@@ -48,7 +48,7 @@ function preload() {
   for (let video of videoList) {
     const name = video.replace('.mp4', '');
     //videos[name] = createVideo(`assets/videos/${video}`);
-    videos[name] = createVideo(`https://github.com/Non0reo/ProjMapP5/raw/main/assets/videos/${video}`);
+    videos[name] = createVideo(`https://raw.githubusercontent.com/Non0reo/ProjMapP5/main/assets/videos/${video}`);
     videos[name].noLoop();
     videos[name].hide();
     videos[name].autoplay(false);
